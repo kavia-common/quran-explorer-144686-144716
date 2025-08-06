@@ -1,48 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header';
+import ContentArea from './components/ContentArea';
+import BottomNavigation from './components/BottomNavigation';
+import { QuranProvider } from './contexts/QuranContext';
 
 // PUBLIC_INTERFACE
 function App() {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState(() => {
+    // Check system preference for auto theme
+    const savedTheme = localStorage.getItem('quran-theme');
+    if (savedTheme) return savedTheme;
+    
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  });
 
   // Effect to apply theme to document element
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('quran-theme', theme);
   }, [theme]);
+
+  // Listen for system theme changes
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e) => {
+      if (!localStorage.getItem('quran-theme-manual')) {
+        setTheme(e.matches ? 'dark' : 'light');
+      }
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
 
   // PUBLIC_INTERFACE
   const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('quran-theme-manual', 'true');
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <button 
-          className="theme-toggle" 
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-        >
-          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-        </button>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          Current theme: <strong>{theme}</strong>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <QuranProvider>
+      <div className="App" data-theme={theme}>
+        <Header />
+        <ContentArea />
+        <BottomNavigation onThemeToggle={toggleTheme} currentTheme={theme} />
+      </div>
+    </QuranProvider>
   );
 }
 

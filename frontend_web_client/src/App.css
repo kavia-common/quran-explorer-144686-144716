@@ -1,104 +1,392 @@
 /* CSS Variables for Theme Management */
 :root {
   /* Light theme colors */
+  --primary-color: #1B5E20;
+  --secondary-color: #81C784;
+  --accent-color: #FFD600;
   --bg-primary: #ffffff;
   --bg-secondary: #f8f9fa;
-  --text-primary: #282c34;
-  --text-secondary: #61dafb;
-  --border-color: #e9ecef;
-  --button-bg: #007bff;
-  --button-text: #ffffff;
+  --bg-card: #ffffff;
+  --text-primary: #1B5E20;
+  --text-secondary: #666666;
+  --text-arabic: #1B5E20;
+  --border-color: #e0e0e0;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 [data-theme="dark"] {
   /* Dark theme colors */
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #282c34;
+  --primary-color: #81C784;
+  --secondary-color: #4CAF50;
+  --accent-color: #FFD600;
+  --bg-primary: #121212;
+  --bg-secondary: #1e1e1e;
+  --bg-card: #2d2d2d;
   --text-primary: #ffffff;
-  --text-secondary: #61dafb;
+  --text-secondary: #b0b0b0;
+  --text-arabic: #ffffff;
   --border-color: #404040;
-  --button-bg: #0056b3;
-  --button-text: #ffffff;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-.App {
-  text-align: center;
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  min-height: 100vh;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: var(--bg-secondary);
+.App {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  background-color: var(--bg-primary);
   color: var(--text-primary);
-  transition: background-color 0.3s ease;
-  position: relative;
 }
 
-.App-link {
+/* Header styles */
+.header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 1rem;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  max-width: 768px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.surah-selector {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.surah-selector:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.surah-selector option {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Content area styles */
+.content-area {
+  flex: 1;
+  padding: 1rem;
+  max-width: 768px;
+  margin: 0 auto;
+  width: 100%;
+  padding-bottom: 100px; /* Space for bottom navigation */
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  font-size: 1.1rem;
   color: var(--text-secondary);
-  transition: color 0.3s ease;
+}
+
+.error {
+  text-align: center;
+  color: #d32f2f;
+  background-color: #ffebee;
+  border: 1px solid #ffcdd2;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+[data-theme="dark"] .error {
+  background-color: #2d1b1b;
+  border-color: #5f2c2c;
+  color: #ff6b6b;
+}
+
+/* Verse styles */
+.verse-container {
+  background-color: var(--bg-card);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.verse-container:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.verse-number {
+  background-color: var(--primary-color);
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.verse-arabic {
+  font-size: 1.8rem;
+  line-height: 2.2;
+  text-align: right;
+  direction: rtl;
+  color: var(--text-arabic);
+  margin-bottom: 1rem;
+  font-family: 'Amiri', 'Scheherazade', 'Traditional Arabic', serif;
+}
+
+.verse-translation {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: left;
+  direction: ltr;
+}
+
+/* Navigation styles */
+.navigation-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.nav-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-button:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-1px);
+}
+
+.nav-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Bottom navigation styles */
+.bottom-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  padding: 1rem;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 99;
+}
+
+.bottom-nav-content {
+  max-width: 768px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.settings-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.settings-select {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  text-align: center;
+  cursor: pointer;
 }
 
 .theme-toggle {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: var(--button-bg);
-  color: var(--button-text);
+  background-color: var(--accent-color);
+  color: #1B5E20;
   border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
+  border-radius: 6px;
+  padding: 0.5rem;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .theme-toggle:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Surah info styles */
+.surah-info {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.surah-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.surah-details {
+  font-size: 0.9rem;
   opacity: 0.9;
 }
 
-.theme-toggle:active {
-  transform: translateY(0);
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Responsive design for mobile */
+/* Responsive design */
 @media (max-width: 768px) {
-  .theme-toggle {
-    top: 10px;
-    right: 10px;
-    padding: 8px 16px;
-    font-size: 12px;
+  .header-content {
+    flex-direction: column;
+    gap: 1rem;
   }
+  
+  .app-title {
+    font-size: 1.3rem;
+  }
+  
+  .content-area {
+    padding: 0.75rem;
+  }
+  
+  .verse-container {
+    padding: 1rem;
+  }
+  
+  .verse-arabic {
+    font-size: 1.6rem;
+    line-height: 2;
+  }
+  
+  .bottom-nav-content {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .settings-group {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .settings-label {
+    text-align: left;
+    flex: 1;
+  }
+  
+  .settings-select,
+  .theme-toggle {
+    flex: 1;
+    max-width: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .verse-arabic {
+    font-size: 1.4rem;
+  }
+  
+  .navigation-controls {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .nav-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Accessibility improvements */
+.nav-button:focus,
+.settings-select:focus,
+.theme-toggle:focus,
+.surah-selector:focus {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Loading animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+  border: 3px solid var(--border-color);
+  border-top: 3px solid var(--primary-color);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
 }
