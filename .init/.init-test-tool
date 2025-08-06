@@ -1,0 +1,4 @@
+{
+    "command": "npm run test",
+    "working_directory": "/home/kavia/workspace/code-generation/quran-explorer-144686-144716/frontend_web_client"
+}
